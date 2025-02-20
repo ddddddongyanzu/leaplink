@@ -1,9 +1,11 @@
 package com.archaist.leaplink_demo.admin.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.archaist.leaplink_demo.admin.common.convention.exception.ClientException;
 import com.archaist.leaplink_demo.admin.common.enums.UserErrorCodeEnum;
 import com.archaist.leaplink_demo.admin.dao.entity.UserDO;
 import com.archaist.leaplink_demo.admin.dao.mapper.UserMapper;
+import com.archaist.leaplink_demo.admin.dto.req.UserRegisterReqDTO;
 import com.archaist.leaplink_demo.admin.dto.resp.UserRespDTO;
 import com.archaist.leaplink_demo.admin.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -38,6 +40,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public Boolean hasUsername(String username) {
-        return userRegisterCachePenetrationBloomFilter.contains(username);
+        return !userRegisterCachePenetrationBloomFilter.contains(username);
+    }
+
+    @Override
+    public void register(UserRegisterReqDTO requestParam) {
+        if (!hasUsername(requestParam.getUsername())) {
+            throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
+        }
+        int inserted = baseMapper.insert(BeanUtil.toBean(requestParam, UserDO.class));
+        if (inserted < 1) {
+            throw new ClientException(UserErrorCodeEnum.USER_SAVE_ERROR);
+        }
+        userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
     }
 }
