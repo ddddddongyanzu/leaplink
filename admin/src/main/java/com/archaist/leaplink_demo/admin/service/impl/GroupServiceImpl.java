@@ -4,10 +4,12 @@ import cn.hutool.core.bean.BeanUtil;
 import com.archaist.leaplink_demo.admin.common.biz.user.UserContext;
 import com.archaist.leaplink_demo.admin.dao.entity.GroupDO;
 import com.archaist.leaplink_demo.admin.dao.mapper.GroupMapper;
+import com.archaist.leaplink_demo.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import com.archaist.leaplink_demo.admin.dto.resp.ShortLinkGroupRespDTO;
 import com.archaist.leaplink_demo.admin.service.GroupService;
 import com.archaist.leaplink_demo.admin.toolkit.RandomGenerator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +46,17 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
                 .orderByDesc(GroupDO::getSortOrder, GroupDO::getCreateTime);
         List<GroupDO> groupDOList = baseMapper.selectList(queryWrapper);
         return BeanUtil.copyToList(groupDOList, ShortLinkGroupRespDTO.class);
+    }
+
+    @Override
+    public void updateGroup(ShortLinkGroupUpdateReqDTO requestParam) {
+        LambdaUpdateWrapper<GroupDO> updateWrapper = Wrappers.lambdaUpdate(GroupDO.class)
+                .eq(GroupDO::getUsername, UserContext.getUsername())
+                .eq(GroupDO::getGid, requestParam.getGid())
+                .eq(GroupDO::getDelFlag, 0);
+        GroupDO groupDO = new GroupDO();
+        groupDO.setName(requestParam.getName());
+        baseMapper.update(groupDO, updateWrapper);
     }
 
     private boolean hasGid(String gid) {

@@ -1,6 +1,7 @@
 package com.archaist.leaplink_demo.admin.service;
 
 import com.archaist.leaplink_demo.admin.dao.entity.GroupDO;
+import com.archaist.leaplink_demo.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import com.archaist.leaplink_demo.admin.dto.resp.ShortLinkGroupRespDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -22,4 +23,10 @@ public interface GroupService extends IService<GroupDO> {
      * @return 用户短链接分组集合
      */
     List<ShortLinkGroupRespDTO> listGroup();
+
+    /**
+     * 修改短链接分组
+     * @param requestParam 修改链接分组参数
+     */
+    void updateGroup(ShortLinkGroupUpdateReqDTO requestParam);
 }
