@@ -1,5 +1,6 @@
 package com.archaist.leaplink_demo.admin.dao.entity;
 
+import com.archaist.leaplink_demo.admin.common.database.BaseDO;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Data
 @TableName("t_user")
-public class UserDO implements Serializable {
+public class UserDO extends BaseDO implements Serializable {
 
     /**
      * id
@@ -46,24 +47,6 @@ public class UserDO implements Serializable {
      * 注销时间戳
      */
     private Long deletionTime;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /**
-     * 修改时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    /**
-     * 删除标识 0：未删除 1：已删除
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Integer delFlag;
 
     public UserDO() {}
 }
