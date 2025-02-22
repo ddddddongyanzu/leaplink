@@ -3,6 +3,7 @@ package com.archaist.leaplink_demo.admin.controller;
 import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.common.convention.result.Results;
 import com.archaist.leaplink_demo.admin.dto.req.ShortLinkGroupSaveReqDTO;
+import com.archaist.leaplink_demo.admin.dto.req.ShortLinkGroupSortReqDTO;
 import com.archaist.leaplink_demo.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import com.archaist.leaplink_demo.admin.dto.resp.ShortLinkGroupRespDTO;
 import com.archaist.leaplink_demo.admin.service.GroupService;
@@ -52,6 +53,15 @@ public class GroupController {
     @DeleteMapping("/api/short-link/v1/group")
     public Result<Void> deleteGroup(@RequestParam String gid) {
         groupService.deleteGroup(gid);
+        return Results.success();
+    }
+
+    /**
+     * 删除短链接分组
+     */
+    @PostMapping("/api/short-link/v1/group/sort")
+    public Result<Void> sortGroup(@RequestBody List<ShortLinkGroupSortReqDTO> requestParam) {
+        groupService.sortGroup(requestParam);
         return Results.success();
     }
 }
