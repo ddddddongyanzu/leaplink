@@ -7,6 +7,7 @@ public class ShortLinkShardingTest {
             "  `origin_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '原始链接',\n" +
             "  `click_num` int(0) NULL DEFAULT 0 COMMENT '点击量',\n" +
             "  `gid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'default',\n" +
+            "  `favicon` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '网站图标',\n" +
             "  `enable_status` tinyint(1) NULL DEFAULT NULL COMMENT '启用标识 0:启用 1:未启用',\n" +
             "  `created_type` tinyint(1) NULL DEFAULT NULL COMMENT '创建类型 0:接口创建 1:控制台创建',\n" +
             "  `valid_date_type` tinyint(0) NULL DEFAULT NULL COMMENT '有效期类型 0: 永久有效 1: 自定义',\n" +
