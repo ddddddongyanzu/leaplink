@@ -5,11 +5,13 @@ import com.archaist.leaplink_demo.project.common.convention.result.Results;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkPageReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
-import com.archaist.leaplink_demo.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkCreateRespDTO;
+import com.archaist.leaplink_demo.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkPageRespDTO;
 import com.archaist.leaplink_demo.project.service.ShortLinkService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,11 @@ import java.util.List;
 public class ShortLinkController {
 
     private final ShortLinkService shortLinkService;
+
+    @GetMapping("/{short-uri}")
+    public void restoreUrl(@PathVariable("short-uri") String shortUri, ServletRequest request, ServletResponse response) {
+        shortLinkService.restoreUrl(shortUri, request, response);
+    }
 
     /**
      * 创建短链接
