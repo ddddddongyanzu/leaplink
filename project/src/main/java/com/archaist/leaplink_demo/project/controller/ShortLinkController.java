@@ -4,6 +4,7 @@ import com.archaist.leaplink_demo.project.common.convention.result.Result;
 import com.archaist.leaplink_demo.project.common.convention.result.Results;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkPageReqDTO;
+import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkCreateRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkPageRespDTO;
@@ -29,6 +30,15 @@ public class ShortLinkController {
     @PostMapping("/api/short-link/v1/create")
     public Result<ShortLinkCreateRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
         return Results.success(shortLinkService.createShortLink(requestParam));
+    }
+
+    /**
+     * 修改短链接
+     */
+    @PutMapping("/api/short-link/v1/update")
+    public Result<Void> updateShortLink(@RequestBody ShortLinkUpdateReqDTO requestParam) {
+        shortLinkService.updateShortLink(requestParam);
+        return Results.success();
     }
 
     /**

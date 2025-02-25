@@ -6,11 +6,10 @@ import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkPageReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkPageRespDTO;
+import com.archaist.leaplink_demo.project.common.convention.result.Results;
+import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 短链接后管控制层
@@ -29,6 +28,15 @@ public class ShortLinkController {
     @PostMapping("/api/short-link/admin/v1/create")
     public Result<ShortLinkPageRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
         return shortLinkRemoteService.createShortLink(requestParam);
+    }
+
+    /**
+     * 修改短链接
+     */
+    @PutMapping("/api/short-link/admin/v1/update")
+    public com.archaist.leaplink_demo.project.common.convention.result.Result<Void> updateShortLink(@RequestBody ShortLinkUpdateReqDTO requestParam) {
+        shortLinkRemoteService.updateShortLink(requestParam);
+        return Results.success();
     }
 
     /**
