@@ -69,7 +69,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 .fullShortUrl(fullShortUrl)
                 .build();
         ShortLinkGotoDO linkGotoDO = ShortLinkGotoDO.builder()
-                .fullShortUrl(requestParam.getDomainProtocol() + fullShortUrl)
+                .fullShortUrl("http://" + fullShortUrl)
                 .gid(requestParam.getGid())
                 .build();
         try {
