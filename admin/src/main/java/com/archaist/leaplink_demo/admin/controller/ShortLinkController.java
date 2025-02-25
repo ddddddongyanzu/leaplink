@@ -5,6 +5,7 @@ import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkPageReqDTO;
+import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkCreateRespDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkPageRespDTO;
 import com.archaist.leaplink_demo.project.common.convention.result.Results;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
@@ -26,7 +27,7 @@ public class ShortLinkController {
      * 创建短链接
      */
     @PostMapping("/api/short-link/admin/v1/create")
-    public Result<ShortLinkPageRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
+    public Result<ShortLinkCreateRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
         return shortLinkRemoteService.createShortLink(requestParam);
     }
 

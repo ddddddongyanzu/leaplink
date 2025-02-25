@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.TypeReference;
 import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkPageReqDTO;
+import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkCreateRespDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkPageRespDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
@@ -26,7 +27,7 @@ public interface ShortLinkRemoteService {
      * @param requestParam 创建短链接请求参数
      * @return 短链接创建响应
      */
-    default Result<ShortLinkPageRespDTO> createShortLink(ShortLinkCreateReqDTO requestParam) {
+    default Result<ShortLinkCreateRespDTO> createShortLink(ShortLinkCreateReqDTO requestParam) {
         String resultBodyStr = HttpUtil.post("http://127.0.0.1:8001/api/short-link/v1/create", JSON.toJSONString(requestParam));
         return JSON.parseObject(resultBodyStr, new TypeReference<>(){
         });
