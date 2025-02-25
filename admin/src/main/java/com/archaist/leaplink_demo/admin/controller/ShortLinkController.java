@@ -33,7 +33,7 @@ public class ShortLinkController {
     /**
      * 修改短链接
      */
-    @PutMapping("/api/short-link/admin/v1/update")
+    @PostMapping("/api/short-link/admin/v1/update")
     public com.archaist.leaplink_demo.project.common.convention.result.Result<Void> updateShortLink(@RequestBody ShortLinkUpdateReqDTO requestParam) {
         shortLinkRemoteService.updateShortLink(requestParam);
         return Results.success();
