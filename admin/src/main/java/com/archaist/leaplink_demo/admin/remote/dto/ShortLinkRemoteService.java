@@ -6,10 +6,10 @@ import com.alibaba.fastjson2.TypeReference;
 import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkPageReqDTO;
+import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkUpdateReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkCreateRespDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkPageRespDTO;
-import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.HashMap;
