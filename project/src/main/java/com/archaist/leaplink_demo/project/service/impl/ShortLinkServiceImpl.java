@@ -19,6 +19,7 @@ import com.archaist.leaplink_demo.project.dto.resp.ShortLinkGroupCountQueryRespD
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkPageRespDTO;
 import com.archaist.leaplink_demo.project.service.ShortLinkService;
 import com.archaist.leaplink_demo.project.toolkit.HashUtil;
+import com.archaist.leaplink_demo.project.toolkit.LinkUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -92,6 +93,11 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 throw new ServiceException("短链接生成重复");
             }
         }
+        stringRedisTemplate.opsForValue().set(
+                fullShortUrl,
+                requestParam.getOriginUrl(),
+                LinkUtil.getLinkCacheValidTime(requestParam.getValidDate()), TimeUnit.MILLISECONDS
+        );
         shortUriCreateCachePenetrationBloomFilter.add(fullShortUrl);
         return ShortLinkCreateRespDTO.builder()
                 .fullShortUrl("http://" + shortLinkDO.getFullShortUrl())
