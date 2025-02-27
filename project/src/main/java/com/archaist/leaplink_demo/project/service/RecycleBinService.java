@@ -2,7 +2,7 @@ package com.archaist.leaplink_demo.project.service;
 
 import com.archaist.leaplink_demo.project.dao.entity.ShortLinkDO;
 import com.archaist.leaplink_demo.project.dto.req.RecycleBinSaveReqDTO;
-import com.archaist.leaplink_demo.project.dto.req.ShortLinkPageReqDTO;
+import com.archaist.leaplink_demo.project.dto.req.ShortLinkRecycleBinPageReqDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkPageRespDTO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -24,5 +24,5 @@ public interface RecycleBinService extends IService<ShortLinkDO> {
      * @param requestParam 分页查询短链接请求参数
      * @return 短链接分页返回结果
      */
-    IPage<ShortLinkPageRespDTO> pageShortLink(ShortLinkPageReqDTO requestParam);
+    IPage<ShortLinkPageRespDTO> pageShortLink(ShortLinkRecycleBinPageReqDTO requestParam);
 }

@@ -3,7 +3,7 @@ package com.archaist.leaplink_demo.project.controller;
 import com.archaist.leaplink_demo.project.common.convention.result.Result;
 import com.archaist.leaplink_demo.project.common.convention.result.Results;
 import com.archaist.leaplink_demo.project.dto.req.RecycleBinSaveReqDTO;
-import com.archaist.leaplink_demo.project.dto.req.ShortLinkPageReqDTO;
+import com.archaist.leaplink_demo.project.dto.req.ShortLinkRecycleBinPageReqDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkPageRespDTO;
 import com.archaist.leaplink_demo.project.service.RecycleBinService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -35,7 +35,7 @@ public class RecycleBinController {
      * 分页查询短链接
      */
     @GetMapping("/api/short-link/v1/recycle-bin/page")
-    public Result<IPage<ShortLinkPageRespDTO>> pageShortLink(ShortLinkPageReqDTO requestParam) {
+    public Result<IPage<ShortLinkPageRespDTO>> pageShortLink(ShortLinkRecycleBinPageReqDTO requestParam) {
         return Results.success(recycleBinService.pageShortLink(requestParam));
     }
 }
