@@ -1,4 +1,4 @@
-package com.archaist.leaplink_demo.admin.remote.dto.req;
+package com.archaist.leaplink_demo.admin.dto.req;
 
 import lombok.Data;
 

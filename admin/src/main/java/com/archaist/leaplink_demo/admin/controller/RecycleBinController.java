@@ -3,7 +3,7 @@ package com.archaist.leaplink_demo.admin.controller;
 import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.common.convention.result.Results;
 import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
-import com.archaist.leaplink_demo.admin.remote.dto.req.RecycleBinSaveReqDTO;
+import com.archaist.leaplink_demo.admin.dto.req.RecycleBinSaveReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkRecycleBinPageReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkPageRespDTO;
 import com.archaist.leaplink_demo.admin.service.RecycleService;
