@@ -3,6 +3,7 @@ package com.archaist.leaplink_demo.admin.controller;
 import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.common.convention.result.Results;
 import com.archaist.leaplink_demo.admin.dto.req.RecycleBinRecoverReqDTO;
+import com.archaist.leaplink_demo.admin.dto.req.RecycleBinRemoveReqDTO;
 import com.archaist.leaplink_demo.admin.dto.req.RecycleBinSaveReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkRecycleBinPageReqDTO;
@@ -52,6 +53,15 @@ public class RecycleBinController {
     @PostMapping("/api/short-link/admin/v1/recycle-bin/recover")
     public Result<Void> recoverRecycleBin(@RequestBody RecycleBinRecoverReqDTO requestParam) {
         shortLinkRemoteService.recoverRecycleBin(requestParam);
+        return Results.success();
+    }
+
+    /**
+     * 移除短链接
+     */
+    @PostMapping("/api/short-link/admin/v1/recycle-bin/remove")
+    public Result<Void> removeRecycleBin(@RequestBody RecycleBinRemoveReqDTO requestParam) {
+        shortLinkRemoteService.removeRecycleBinReqDTO(requestParam);
         return Results.success();
     }
 }

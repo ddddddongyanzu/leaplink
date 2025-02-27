@@ -2,6 +2,7 @@ package com.archaist.leaplink_demo.project.service;
 
 import com.archaist.leaplink_demo.project.dao.entity.ShortLinkDO;
 import com.archaist.leaplink_demo.project.dto.req.RecycleBinRecoverReqDTO;
+import com.archaist.leaplink_demo.project.dto.req.RecycleBinRemoveReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.RecycleBinSaveReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkRecycleBinPageReqDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkPageRespDTO;
@@ -22,14 +23,23 @@ public interface RecycleBinService extends IService<ShortLinkDO> {
 
     /**
      * 分页查询短链接
+     *
      * @param requestParam 分页查询短链接请求参数
      * @return 短链接分页返回结果
      */
     IPage<ShortLinkPageRespDTO> pageShortLink(ShortLinkRecycleBinPageReqDTO requestParam);
 
     /**
-     * 恢复短链接
-     * @param requestParam 请求参数
+     * 从回收站恢复短链接
+     *
+     * @param requestParam 恢复短链接请求参数
      */
     void recoverRecycleBin(RecycleBinRecoverReqDTO requestParam);
+
+    /**
+     * 从回收站移除短链接
+     *
+     * @param requestParam 移除短链接请求参数
+     */
+    void removeRecycleBinReqDTO(RecycleBinRemoveReqDTO requestParam);
 }
