@@ -2,8 +2,9 @@ package com.archaist.leaplink_demo.admin.controller;
 
 import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.common.convention.result.Results;
-import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
+import com.archaist.leaplink_demo.admin.dto.req.RecycleBinRecoverReqDTO;
 import com.archaist.leaplink_demo.admin.dto.req.RecycleBinSaveReqDTO;
+import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkRecycleBinPageReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkPageRespDTO;
 import com.archaist.leaplink_demo.admin.service.RecycleService;
@@ -43,5 +44,14 @@ public class RecycleBinController {
     @GetMapping("/api/short-link/admin/v1/recycle-bin/page")
     public Result<IPage<ShortLinkPageRespDTO>> pageShortLink(ShortLinkRecycleBinPageReqDTO requestParam) {
         return recycleService.pageRecycleBinShortLink(requestParam);
+    }
+
+    /**
+     * 恢复短链接
+     */
+    @PostMapping("/api/short-link/admin/v1/recycle-bin/recover")
+    public Result<Void> recoverRecycleBin(@RequestBody RecycleBinRecoverReqDTO requestParam) {
+        shortLinkRemoteService.recoverRecycleBin(requestParam);
+        return Results.success();
     }
 }

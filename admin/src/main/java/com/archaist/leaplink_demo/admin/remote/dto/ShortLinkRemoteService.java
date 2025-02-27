@@ -4,6 +4,8 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
 import com.archaist.leaplink_demo.admin.common.convention.result.Result;
+import com.archaist.leaplink_demo.admin.dto.req.RecycleBinRecoverReqDTO;
+import com.archaist.leaplink_demo.admin.dto.req.RecycleBinSaveReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.*;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkCreateRespDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkGroupCountQueryRespDTO;
@@ -106,5 +108,13 @@ public interface ShortLinkRemoteService {
         String resultPageStr = HttpUtil.get("http://127.0.0.1:8001/api/short-link/v1/recycle-bin/page", requestMap);
         return JSON.parseObject(resultPageStr, new TypeReference<>(){
         });
+    }
+
+    /**
+     * 恢复短链接
+     * @param requestParam 恢复短链接请求参数
+     */
+    default void recoverRecycleBin(RecycleBinRecoverReqDTO requestParam) {
+        HttpUtil.post("http://127.0.0.1:8001/api/short-link/v1/recycle-bin/recover", JSON.toJSONString(requestParam));
     }
 }
