@@ -4,7 +4,11 @@ import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.common.convention.result.Results;
 import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
 import com.archaist.leaplink_demo.admin.remote.dto.req.RecycleBinSaveReqDTO;
+import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkPageReqDTO;
+import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkPageRespDTO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,4 +34,11 @@ public class RecycleBinController {
         return Results.success();
     }
 
+    /**
+     * 分页查询回收站短链接
+     */
+    @GetMapping("/api/short-link/admin/v1/recycle-bin/page")
+    public Result<IPage<ShortLinkPageRespDTO>> pageShortLink(ShortLinkPageReqDTO requestParam) {
+        return shortLinkRemoteService.pageRecycleBinShortLink(requestParam);
+    }
 }
