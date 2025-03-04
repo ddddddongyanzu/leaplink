@@ -7,14 +7,20 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.archaist.leaplink_demo.project.common.constant.RedisKeyConstant;
+import com.archaist.leaplink_demo.project.common.constant.ShortLinkConstant;
 import com.archaist.leaplink_demo.project.common.convention.exception.ClientException;
 import com.archaist.leaplink_demo.project.common.convention.exception.ServiceException;
 import com.archaist.leaplink_demo.project.common.enums.ValidateTypeEnum;
 import com.archaist.leaplink_demo.project.dao.entity.LinkAccessStatsDO;
+import com.archaist.leaplink_demo.project.dao.entity.LinkLocalStatsDO;
 import com.archaist.leaplink_demo.project.dao.entity.ShortLinkDO;
 import com.archaist.leaplink_demo.project.dao.entity.ShortLinkGotoDO;
 import com.archaist.leaplink_demo.project.dao.mapper.LinkAccessStatsMapper;
+import com.archaist.leaplink_demo.project.dao.mapper.LinkLocalStatsMapper;
 import com.archaist.leaplink_demo.project.dao.mapper.ShortLinkGotoMapper;
 import com.archaist.leaplink_demo.project.dao.mapper.ShortLinkMapper;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkCreateReqDTO;
@@ -46,6 +52,7 @@ import org.jsoup.nodes.Element;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -70,6 +77,10 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     private final StringRedisTemplate stringRedisTemplate;
     private final RedissonClient redissonClient;
     private final LinkAccessStatsMapper linkAccessStatsMapper;
+    private final LinkLocalStatsMapper linkLocalStatsMapper;
+
+    @Value("${short-link.stats.local.amap-key}")
+    private String staticLocalAmapKey;
 
     @Override
     public ShortLinkCreateRespDTO createShortLink(ShortLinkCreateReqDTO requestParam) {
@@ -299,6 +310,28 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                     .date(new Date())
                     .build();
             linkAccessStatsMapper.shortLinkStats(linkAccessStatsDO);
+            Map<String, Object> localParamMap = new HashMap<>();
+            localParamMap.put("key", staticLocalAmapKey);
+            localParamMap.put("ip", remoteAddr);
+            String localResultStr = HttpUtil.get(ShortLinkConstant.AMAP_REMOTE_URL, localParamMap);
+            JSONObject localResultObject = JSON.parseObject(localResultStr);
+            String infoCode = localResultObject.getString("infocode");
+            LinkLocalStatsDO linkLocalStatsDO;
+            if (StrUtil.isNotBlank(infoCode) && StrUtil.equals(infoCode, "10000")) {
+                String province = localResultObject.getString("province");
+                boolean unknownFlag = StrUtil.equals(province, "[]");
+                linkLocalStatsDO = LinkLocalStatsDO.builder()
+                        .province(unknownFlag ? "未知" : province)
+                        .city(unknownFlag ? "未知" : localResultObject.getString("city"))
+                        .adcode(unknownFlag ? "未知" : localResultObject.getString("adcode"))
+                        .cnt(1)
+                        .fullShortUrl(fullShortUrl)
+                        .country("中国")
+                        .gid(gid)
+                        .date(new Date())
+                        .build();
+                linkLocalStatsMapper.shortLinkLocalStats(linkLocalStatsDO);
+            }
         } catch (Throwable ex) {
             log.error("短链接统计量异常", ex);
         }
