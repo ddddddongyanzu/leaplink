@@ -15,14 +15,8 @@ import com.archaist.leaplink_demo.project.common.constant.ShortLinkConstant;
 import com.archaist.leaplink_demo.project.common.convention.exception.ClientException;
 import com.archaist.leaplink_demo.project.common.convention.exception.ServiceException;
 import com.archaist.leaplink_demo.project.common.enums.ValidateTypeEnum;
-import com.archaist.leaplink_demo.project.dao.entity.LinkAccessStatsDO;
-import com.archaist.leaplink_demo.project.dao.entity.LinkLocalStatsDO;
-import com.archaist.leaplink_demo.project.dao.entity.ShortLinkDO;
-import com.archaist.leaplink_demo.project.dao.entity.ShortLinkGotoDO;
-import com.archaist.leaplink_demo.project.dao.mapper.LinkAccessStatsMapper;
-import com.archaist.leaplink_demo.project.dao.mapper.LinkLocalStatsMapper;
-import com.archaist.leaplink_demo.project.dao.mapper.ShortLinkGotoMapper;
-import com.archaist.leaplink_demo.project.dao.mapper.ShortLinkMapper;
+import com.archaist.leaplink_demo.project.dao.entity.*;
+import com.archaist.leaplink_demo.project.dao.mapper.*;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkPageReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
@@ -78,6 +72,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     private final RedissonClient redissonClient;
     private final LinkAccessStatsMapper linkAccessStatsMapper;
     private final LinkLocalStatsMapper linkLocalStatsMapper;
+    private final LinkOsStatsMapper linkOsStatsMapper;
 
     @Value("${short-link.stats.local.amap-key}")
     private String staticLocalAmapKey;
@@ -331,6 +326,14 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                         .date(new Date())
                         .build();
                 linkLocalStatsMapper.shortLinkLocalStats(linkLocalStatsDO);
+                LinkOsStatsDO linkOsStatsDO = LinkOsStatsDO.builder()
+                        .os(LinkUtil.getOs((HttpServletRequest) request))
+                        .cnt(1)
+                        .gid(gid)
+                        .fullShortUrl(fullShortUrl)
+                        .date(new Date())
+                        .build();
+                linkOsStatsMapper.shortLinkOsStats(linkOsStatsDO);
             }
         } catch (Throwable ex) {
             log.error("短链接统计量异常", ex);
