@@ -1,6 +1,7 @@
 package com.archaist.leaplink_demo.project.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.archaist.leaplink_demo.project.dao.entity.*;
 import com.archaist.leaplink_demo.project.dao.mapper.*;
@@ -36,6 +37,10 @@ public class ShortLinkStatsServiceImpl implements ShortLinkStatsService {
     public ShortLinkStatsRespDTO oneShortLinkStats(ShortLinkStatsReqDTO requestParam) {
         // 基础访问详情
         List<LinkAccessStatsDO> listStatsByShortLink = linkAccessStatsMapper.listStatsByShortLink(requestParam);
+        if (CollUtil.isEmpty(listStatsByShortLink)) {
+            return null;
+        }
+        LinkAccessStatsDO pvUvUipStatsByShortLink = linkAccessLogsMapper.findPvUvUipStatsByShortLink(requestParam);
         // 地区访问详情（仅国内）
         List<ShortLinkStatsLocaleCNRespDTO> localeCnStats = new ArrayList<>();
         List<LinkLocalStatsDO> listedLocaleByShortLink = linkLocaleStatsMapper.listLocalByShortLink(requestParam);
@@ -173,6 +178,9 @@ public class ShortLinkStatsServiceImpl implements ShortLinkStatsService {
             networkStats.add(networkRespDTO);
         });
         return ShortLinkStatsRespDTO.builder()
+                .pv(pvUvUipStatsByShortLink.getPv())
+                .uv(pvUvUipStatsByShortLink.getUv())
+                .uip(pvUvUipStatsByShortLink.getUip())
                 .daily(BeanUtil.copyToList(listStatsByShortLink, ShortLinkStatsAccessDailyRespDTO.class))
                 .localeCnStats(localeCnStats)
                 .hourStats(hourStats)
