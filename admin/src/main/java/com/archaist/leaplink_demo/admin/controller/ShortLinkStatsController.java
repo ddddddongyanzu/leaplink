@@ -2,6 +2,7 @@ package com.archaist.leaplink_demo.admin.controller;
 
 import com.archaist.leaplink_demo.admin.common.convention.result.Result;
 import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
+import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkGroupStatsAccessRecordReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkGroupStatsReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkStatsAccessRecordReqDTO;
 import com.archaist.leaplink_demo.admin.remote.dto.req.ShortLinkStatsReqDTO;
@@ -47,5 +48,13 @@ public class ShortLinkStatsController {
     @GetMapping("/api/short-link/admin/v1/access-record")
     public Result<IPage<ShortLinkStatsAccessRecordRespDTO>> shortLinkStatsAccessRecord(ShortLinkStatsAccessRecordReqDTO requestParam) {
         return shortLinkRemoteService.shortLinkStatsAccessRecord(requestParam);
+    }
+
+    /**
+     * 访问分组短链接指定时间内访问记录监控数据
+     */
+    @GetMapping("/api/short-link/admin/v1/access-record/group")
+    public Result<IPage<ShortLinkStatsAccessRecordRespDTO>> groupShortLinkStatsAccessRecord(ShortLinkGroupStatsAccessRecordReqDTO requestParam) {
+        return shortLinkRemoteService.groupShortLinkStatsAccessRecord(requestParam);
     }
 }
