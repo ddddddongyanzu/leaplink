@@ -87,4 +87,19 @@ public class ShortLinkDO extends BaseDO implements Serializable {
      */
     private String favicon;
 
+    /**
+     * 历史pv
+     */
+    private Integer totalPv;
+
+    /**
+     * 历史uv
+     */
+    private Integer totalUv;
+
+    /**
+     * 历史uip
+     */
+    private Integer totalUip;
+
 }
