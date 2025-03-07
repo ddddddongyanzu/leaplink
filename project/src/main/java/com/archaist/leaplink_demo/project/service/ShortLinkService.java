@@ -1,6 +1,7 @@
 package com.archaist.leaplink_demo.project.service;
 
 import com.archaist.leaplink_demo.project.dao.entity.ShortLinkDO;
+import com.archaist.leaplink_demo.project.dto.biz.ShortLinkStatsRecordDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkBatchCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkPageReqDTO;
@@ -62,4 +63,13 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      * @param response HTTP 响应
      */
     void restoreUrl(String shortUri, ServletRequest request, ServletResponse response);
+
+    /**
+     * 短链接统计
+     *
+     * @param fullShortUrl         完整短链接
+     * @param gid                  分组标识
+     * @param shortLinkStatsRecord 短链接统计实体参数
+     */
+    void shortLinkStats(String fullShortUrl, String gid, ShortLinkStatsRecordDTO shortLinkStatsRecord);
 }
