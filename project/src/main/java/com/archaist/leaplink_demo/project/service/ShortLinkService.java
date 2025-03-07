@@ -1,9 +1,11 @@
 package com.archaist.leaplink_demo.project.service;
 
 import com.archaist.leaplink_demo.project.dao.entity.ShortLinkDO;
+import com.archaist.leaplink_demo.project.dto.req.ShortLinkBatchCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkPageReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
+import com.archaist.leaplink_demo.project.dto.resp.ShortLinkBatchCreateRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkCreateRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkPageRespDTO;
@@ -24,6 +26,14 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      * @return 短链接创建信息
      */
     ShortLinkCreateRespDTO createShortLink(ShortLinkCreateReqDTO requestParam);
+
+    /**
+     * 批量创建短链接
+     *
+     * @param requestParam 批量创建短链接请求参数
+     * @return 批量创建短链接返回参数
+     */
+    ShortLinkBatchCreateRespDTO batchCreateShortLink(ShortLinkBatchCreateReqDTO requestParam);
 
     /**
      * 修改短链接

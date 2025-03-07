@@ -2,9 +2,11 @@ package com.archaist.leaplink_demo.project.controller;
 
 import com.archaist.leaplink_demo.project.common.convention.result.Result;
 import com.archaist.leaplink_demo.project.common.convention.result.Results;
+import com.archaist.leaplink_demo.project.dto.req.ShortLinkBatchCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkCreateReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkPageReqDTO;
 import com.archaist.leaplink_demo.project.dto.req.ShortLinkUpdateReqDTO;
+import com.archaist.leaplink_demo.project.dto.resp.ShortLinkBatchCreateRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkCreateRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.archaist.leaplink_demo.project.dto.resp.ShortLinkPageRespDTO;
@@ -40,6 +42,14 @@ public class ShortLinkController {
     @PostMapping("/api/short-link/v1/create")
     public Result<ShortLinkCreateRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
         return Results.success(shortLinkService.createShortLink(requestParam));
+    }
+
+    /**
+     * 批量创建短链接
+     */
+    @PostMapping("/api/short-link/v1/create/batch")
+    public Result<ShortLinkBatchCreateRespDTO> batchCreateShortLink(@RequestBody ShortLinkBatchCreateReqDTO requestParam) {
+        return Results.success(shortLinkService.batchCreateShortLink(requestParam));
     }
 
     /**
