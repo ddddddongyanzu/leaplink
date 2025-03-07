@@ -17,6 +17,8 @@ spring:
       suffix: .html
 
 short-link:
+  domain:
+    default: nurl.ink:8001
   stats:
     local:
       amap-key: adf086bb4205a5a872113e80dd9dbcee
