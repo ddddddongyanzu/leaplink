@@ -3,6 +3,7 @@ package com.archaist.leaplink_demo.admin.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson2.JSON;
+import com.archaist.leaplink_demo.admin.common.biz.user.UserContext;
 import com.archaist.leaplink_demo.admin.common.constant.RedisCacheConstant;
 import com.archaist.leaplink_demo.admin.common.convention.exception.ClientException;
 import com.archaist.leaplink_demo.admin.common.enums.UserErrorCodeEnum;
@@ -28,6 +29,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -69,20 +71,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
         }
         RLock lock = redissonClient.getLock(RedisCacheConstant.LOCK_USER_REGISTER_KEY + requestParam.getUsername());
+        if (lock.tryLock()) {
+            throw new ClientException(UserErrorCodeEnum.USER_EXIST);
+        }
         try {
-            if (lock.tryLock()) {
-                try {
-                    int inserted = baseMapper.insert(BeanUtil.toBean(requestParam, UserDO.class));
-                    if (inserted < 1) {
-                        throw new ClientException(UserErrorCodeEnum.USER_SAVE_ERROR);
-                    }
-                } catch(DuplicateKeyException ex) {
-                    throw new ClientException(UserErrorCodeEnum.USER_EXIST);
-                }
-                userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
-                groupService.saveGroup(requestParam.getUsername(), "默认分组");
-                return;
+            int inserted = baseMapper.insert(BeanUtil.toBean(requestParam, UserDO.class));
+            if (inserted < 1) {
+                throw new ClientException(UserErrorCodeEnum.USER_SAVE_ERROR);
             }
+            userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
+            groupService.saveGroup(requestParam.getUsername(), "默认分组");
+        } catch (DuplicateKeyException ex) {
             throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
         } finally {
             lock.unlock();
@@ -131,7 +130,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public Boolean checkLogin(String username, String token) {
-        return  stringRedisTemplate.opsForHash().get(USER_LOGIN_KEY + username, token)!= null;
+        return stringRedisTemplate.opsForHash().get(USER_LOGIN_KEY + username, token) != null;
     }
 
     @Override
