@@ -16,6 +16,7 @@ import static com.archaist.leaplink_demo.project.common.constant.RedisKeyConstan
  * 延迟消费短链接统计发送者
  */
 @Component
+@Deprecated
 @RequiredArgsConstructor
 public class DelayShortLinkStatsProducer {
 
