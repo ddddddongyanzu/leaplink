@@ -10,7 +10,7 @@ import com.archaist.leaplink_demo.admin.dao.mapper.GroupMapper;
 import com.archaist.leaplink_demo.admin.dto.req.ShortLinkGroupSortReqDTO;
 import com.archaist.leaplink_demo.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import com.archaist.leaplink_demo.admin.dto.resp.ShortLinkGroupRespDTO;
-import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkRemoteService;
+import com.archaist.leaplink_demo.admin.remote.dto.ShortLinkActualRemoteService;
 import com.archaist.leaplink_demo.admin.remote.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.archaist.leaplink_demo.admin.service.GroupService;
 import com.archaist.leaplink_demo.admin.toolkit.RandomGenerator;
@@ -39,15 +39,11 @@ import static com.archaist.leaplink_demo.admin.common.constant.RedisCacheConstan
 @RequiredArgsConstructor
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupService {
 
+    private final ShortLinkActualRemoteService shortLinkActualRemoteService;
     private final RedissonClient redissonClient;
 
     @Value("${short-link.group.max-num}")
     private Integer groupMaxNum;
-
-    /**
-     * 后续重构为 SpringCloud Feign 调用
-     */
-    ShortLinkRemoteService shortLinkRemoteService = new ShortLinkRemoteService() {};
 
     @Override
     public void saveGroup(String groupName) {
@@ -89,7 +85,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
                 .eq(GroupDO::getUsername, UserContext.getUsername())
                 .orderByDesc(GroupDO::getSortOrder, GroupDO::getCreateTime);
         List<GroupDO> groupDOList = baseMapper.selectList(queryWrapper);
-        Result<List<ShortLinkGroupCountQueryRespDTO>> listResult = shortLinkRemoteService
+        Result<List<ShortLinkGroupCountQueryRespDTO>> listResult = shortLinkActualRemoteService
                 .listGroupShortLinkCount(groupDOList.stream().map(GroupDO::getGid).toList());
         List<ShortLinkGroupRespDTO> shortLinkGroupRespDTOList = BeanUtil.copyToList(groupDOList, ShortLinkGroupRespDTO.class);
         shortLinkGroupRespDTOList.forEach(each -> {
