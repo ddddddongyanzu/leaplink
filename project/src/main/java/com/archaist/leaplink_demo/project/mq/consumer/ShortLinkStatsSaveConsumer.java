@@ -11,7 +11,6 @@ import com.archaist.leaplink_demo.project.dao.entity.*;
 import com.archaist.leaplink_demo.project.dao.mapper.*;
 import com.archaist.leaplink_demo.project.dto.biz.ShortLinkStatsRecordDTO;
 import com.archaist.leaplink_demo.project.mq.idempotent.MessageQueueIdempotentHandler;
-import com.archaist.leaplink_demo.project.mq.producer.DelayShortLinkStatsProducer;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
@@ -79,6 +78,7 @@ public class ShortLinkStatsSaveConsumer implements StreamListener<String, MapRec
         } catch (Throwable ex) {
             messageQueueIdempotentHandler.delMessageProcessed(id.toString());
             log.error("记录短链接消费异常", ex);
+            throw ex;
         }
         messageQueueIdempotentHandler.setAccomplish(id.toString());
     }
